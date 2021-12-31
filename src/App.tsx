@@ -79,7 +79,7 @@ function App() {
       <Card sx={{ width: 360 }}>
         <CardContent>
           <Typography component="div" variant="h4">
-            Game ikväll?
+            {players.length >= 5 ? "Game ikväll!" : "Game ikväll?"}
           </Typography>
           <List
             sx={{ width: "50%", maxWidth: 180, bgcolor: "background.paper" }}
