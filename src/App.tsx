@@ -14,6 +14,8 @@ import {
   DialogActions,
   DialogContent,
   Typography,
+  Checkbox,
+  FormControlLabel,
 } from "@mui/material";
 import { IPlayer } from "./domain/player";
 
@@ -21,6 +23,7 @@ function App() {
   const [players, setPlayers] = useState<IPlayer[]>([]);
   const [open, setOpen] = useState(false);
   const [player, setPlayer] = useState<IPlayer>({ name: "" });
+  const [remember, setRemember] = useState<boolean>(false);
 
   const getPlayers = async () => {
     const response = await fetch(
@@ -93,6 +96,12 @@ function App() {
             variant="standard"
             onChange={(e) => setPlayer({ ...player, name: e.target.value })}
           />
+          <FormControlLabel
+            label="Kom ihåg mig"
+            control={
+              <Checkbox checked={remember} onChange={() => setRemember(true)} />
+            }
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Avbryt</Button>
@@ -100,6 +109,9 @@ function App() {
             onClick={() => {
               addPlayer(player);
               getPlayers();
+              if (remember) {
+                document.cookie = `player=${JSON.stringify(player)}`;
+              }
               handleClose();
             }}
           >
