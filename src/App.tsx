@@ -22,7 +22,7 @@ import { IPlayer } from "./domain/player";
 function App() {
   const [players, setPlayers] = useState<IPlayer[]>([]);
   const [open, setOpen] = useState(false);
-  const [player, setPlayer] = useState<IPlayer>({ name: "" });
+  const [player, setPlayer] = useState<IPlayer | null>(null);
   const [remember, setRemember] = useState<boolean>(false);
 
   const getPlayers = async () => {
@@ -60,6 +60,22 @@ function App() {
     getPlayers();
   }, []);
 
+  useEffect(() => {
+    const cookies = document.cookie.split(";").map((x) => {
+      const cookie = x.split("=");
+      return {
+        key: cookie[0].trim(),
+        value: cookie[1].trim(),
+      };
+    });
+    const playerCookie = cookies.find((x) => x.key === "player");
+    if (playerCookie) {
+      const _player: IPlayer = JSON.parse(playerCookie.value);
+      const newPlayer: IPlayer = { ...player, name: _player.name };
+      setPlayer(newPlayer);
+    }
+  }, []);
+
   return (
     <div className="App">
       <Card sx={{ width: 360 }}>
@@ -79,7 +95,16 @@ function App() {
               </ListItem>
             ))}
           </List>
-          <Button variant="contained" onClick={handleClickOpen}>
+          <Button
+            variant="contained"
+            onClick={() => {
+              if (player) {
+                addPlayer(player);
+              } else {
+                handleClickOpen();
+              }
+            }}
+          >
             Game ikväll
           </Button>
         </CardContent>
@@ -107,7 +132,7 @@ function App() {
           <Button onClick={handleClose}>Avbryt</Button>
           <Button
             onClick={() => {
-              addPlayer(player);
+              if (player) addPlayer(player!);
               getPlayers();
               if (remember) {
                 document.cookie = `player=${JSON.stringify(player)}`;
