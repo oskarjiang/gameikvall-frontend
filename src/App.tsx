@@ -33,19 +33,15 @@ function App() {
     setPlayers(data);
   };
   const addPlayer = async (player: IPlayer) => {
-    const response = await fetch(
-      "https://gameikvall.logotype.workers.dev/addPlayer",
-      {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(player),
-      }
-    );
-    const data = await response.json();
-    setPlayers(data);
+    await fetch("https://gameikvall.logotype.workers.dev/addPlayer", {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(player),
+    });
+    setPlayers([...players, player]);
   };
 
   const handleClickOpen = () => {
