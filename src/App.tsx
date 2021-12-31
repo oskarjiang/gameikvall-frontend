@@ -41,7 +41,9 @@ function App() {
       },
       body: JSON.stringify(player),
     });
-    setPlayers([...players, player]);
+    if (!players.find((x) => x.name === player.name)) {
+      setPlayers([...players, player]);
+    }
   };
 
   const handleClickOpen = () => {
