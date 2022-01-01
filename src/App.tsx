@@ -59,11 +59,14 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (!document.cookie){
+      return
+    }
     const cookies = document.cookie.split(";").map((x) => {
       const cookie = x.split("=");
       return {
-        key: cookie[0].trim(),
-        value: cookie[1].trim(),
+        key: cookie[0]?.trim(),
+        value: cookie[1]?.trim(),
       };
     });
     const playerCookie = cookies.find((x) => x.key === "player");
