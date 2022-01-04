@@ -4,13 +4,24 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import CookieConsent from "react-cookie-consent";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#413a27",
+    },
+  },
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <CookieConsent>
-      This website uses cookies to enhance the user experience.
-    </CookieConsent>
-    <App />
+    <ThemeProvider theme={theme}>
+      <CookieConsent>
+        This website uses cookies to enhance the user experience.
+      </CookieConsent>
+      <App />
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );
